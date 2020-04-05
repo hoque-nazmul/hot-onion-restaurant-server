@@ -52,7 +52,6 @@ app.get('/foods', (req, res) => {
 // Get Single Food Item
 app.get('/food/:key', (req, res) => {
     const productKey = req.params.key;
-    console.log(productKey);
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
         const collection = client.db("hotOnion").collection("foods");
@@ -68,6 +67,25 @@ app.get('/food/:key', (req, res) => {
         client.close();
     });
 });
+
+// Get Cart Foods
+app.post('/foodsByKeys', (req, res) => {
+    const keys = req.body;
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+        const collection = client.db("hotOnion").collection("foods");
+        collection.find({ key : { $in: keys } }).toArray((error, result) => {
+            if(error) {
+                console.log(error);
+                res.status(500).send({message:error})
+            }
+            else {
+                res.send(result);
+            }
+        });
+        client.close();
+    });
+})
 
 app.get('/', (req, res) => res.send("Hello Word, I am from server."));
 

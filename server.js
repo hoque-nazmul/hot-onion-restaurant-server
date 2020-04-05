@@ -64,9 +64,7 @@ app.get('/getFood', (req, res) => {
     });
 });
 
-app.get('/', (req, res) => res.send('Hello World!'))
-
-app.get('/hello', (req, res) => res.send('Pakapaki'))
+app.get('/', (req, res) => res.send("Hello Word, I am from server."));
 
 function formatDate(date) {
     var hours = date.getHours();

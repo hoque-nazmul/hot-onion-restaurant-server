@@ -49,8 +49,29 @@ app.get('/foods', (req, res) => {
     });
 });
 
+// Get Single Food Item
+app.get('/food/:key', (req, res) => {
+    const productKey = req.params.key;
+    console.log(productKey);
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+        const collection = client.db("hotOnion").collection("foods");
+        collection.find({ key : productKey}).toArray((error, result) => {
+            if(error) {
+                console.log(error);
+                res.status(500).send({message:error})
+            }
+            else {
+                res.send(result[0]);
+            }
+        });
+        client.close();
+    });
+});
+
 app.get('/', (req, res) => res.send("Hello Word, I am from server."));
 
+// For Showing Current Time
 function formatDate(date) {
     var hours = date.getHours();
     var minutes = date.getMinutes();

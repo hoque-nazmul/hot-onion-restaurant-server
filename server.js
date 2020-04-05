@@ -48,28 +48,69 @@ app.post('/addFood', (req, res) => {
     });
 });
 
-app.get('/getFoods', (req, res) => {
+// For Getting Lunch Foods
+app.get('/foods', (req, res) => {
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
     const collection = client.db("hotOnion").collection("foods");
-    collection.find().toArray((error, documents) => {
+    collection.find().toArray((error, result) => {
         if(error) {
             console.log(error);
             res.status(500).send({message:error});
         }
         else {
-            res.send(documents);
+            res.send(result);
         }
     })
     client.close();
     });
 });
 
-app.get('/getFood', (req, res) => {
+
+
+
+// For Getting Lunch Foods
+app.get('/lunchFoods', (req, res) => {
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
     const collection = client.db("hotOnion").collection("foods");
-    collection.find({name : "Nzmul Hoque" }).toArray((error, result) => {
+    collection.find({category : "lunch" }).toArray((error, result) => {
+        if(error) {
+            console.log(error);
+            res.status(500).send({message:error});
+        }
+        else {
+            res.send(result);
+        }
+    })
+    client.close();
+    });
+});
+
+// For Getting Breakfast Foods
+app.get('/breakfastFoods', (req, res) => {
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+    const collection = client.db("hotOnion").collection("foods");
+    collection.find({category : "breakfast" }).toArray((error, result) => {
+        if(error) {
+            console.log(error);
+            res.status(500).send({message:error});
+        }
+        else {
+            res.send(result);
+        }
+    })
+    client.close();
+    });
+});
+
+// For Getting Breakfast Foods
+app.get('/dinnerFoods', (req, res) => {
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+    const collection = client.db("hotOnion").collection("foods");
+    collection.find({category : "dinner" }).toArray((error, result) => {
         if(error) {
             console.log(error);
             res.status(500).send({message:error});

@@ -44,7 +44,6 @@ app.post('/placeOrder', (req, res)=> {
             res.status(500).send({message:error});
         }
         else {
-            console.log(result.ops);
             res.send(result.ops[0]);
         }
     })

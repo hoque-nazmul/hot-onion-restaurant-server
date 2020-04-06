@@ -31,6 +31,27 @@ app.post('/addAllFoods', (req, res)=> {
     });
 });
 
+// API for Place order to Database
+app.post('/placeOrder', (req, res)=> {
+    const orderInfo = req.body;
+    orderInfo.created_at = new Date();
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+    const collection = client.db("hotOnion").collection("orders");
+    collection.insertOne(orderInfo, (error, result) => {
+        if(error) {
+            console.log(error);
+            res.status(500).send({message:error});
+        }
+        else {
+            console.log(result.ops);
+            res.send(result.ops[0]);
+        }
+    })
+    client.close();
+    });
+});
+
 // Get All Food Items
 app.get('/foods', (req, res) => {
     client = new MongoClient(uri, { useNewUrlParser: true });
